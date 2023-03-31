@@ -22,7 +22,7 @@ class StudentLogin(APIView):
 
         try:
             student = Student.objects.get(email=email)
-            if student and check_password(password, student.password):
+            if check_password(password, student.password):
                 serializer = StudentLoginSerializer(student)
                 return Response(serializer.data)
             return Response('Wrong email and password combination')
@@ -49,7 +49,7 @@ class LecturerLogin(APIView):
 
         try:
             lecturer = Lecturer.objects.get(email=email)
-            if lecturer and check_password(password, lecturer.password):
+            if check_password(password, lecturer.password):
                 serializer = LecturerLoginSerializer(lecturer)
                 return Response(serializer.data)
             return Response('Wrong email and password combination')
@@ -67,9 +67,21 @@ class LecturerDetail(PartialUpdateMixin, RetrieveUpdateDestroyAPIView):
     serializer_class = LecturerSerializer
 
 
-class AdminLogin(RetrieveAPIView):
-    queryset = Admin.objects.all()
-    serializer_class = AdminLoginSerializer
+class AdminLogin(APIView):
+    allowed_methods = ['POST']
+
+    def post(self, request, *args, **kwargs):
+        email = request.data.get('email')
+        password = request.data.get('password')
+
+        try:
+            admin = Admin.objects.get(email=email)
+            if check_password(password, admin.password):
+                serializer = AdminLoginSerializer(admin)
+                return Response(serializer.data)
+            return Response('Wrong email and password combination')
+        except Admin.DoesNotExist:
+            raise Http404
 
 
 class AdminList(ListCreateAPIView):
