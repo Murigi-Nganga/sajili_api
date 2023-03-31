@@ -50,7 +50,7 @@ class Subject(models.Model):
         return self.name
     
 class Enrollment(models.Model):
-    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    student = models.OneToOneField(Student, on_delete=models.CASCADE)
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     
     def __str__(self):

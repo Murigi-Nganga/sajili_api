@@ -26,6 +26,17 @@ class StudentSerializer(UserSerializer):
         model = Student
         extra_kwargs = {'password': {'write_only': True}}
 
+    def create(self, validated_data):
+        request_data = self.context.get('request').data
+        
+        if not request_data.get('course'):
+           raise serializers.ValidationError({"course": ["This field required."]}) 
+
+        student = super().create(validated_data)
+        course = Course.objects.get(name=request_data.get('course'))
+        Enrollment.objects.create(student=student, course=course)
+        return student
+
 
 class StudentLoginSerializer(UserLoginSerializer):
     class Meta:

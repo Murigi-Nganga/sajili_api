@@ -74,7 +74,7 @@ class AdminLogin(RetrieveAPIView):
 
 class AdminList(ListCreateAPIView):
     queryset = Admin.objects.all()
-    serializer_class = LecturerSerializer
+    serializer_class = AdminSerializer
 
 
 class AdminDetail(PartialUpdateMixin, RetrieveUpdateDestroyAPIView):
