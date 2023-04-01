@@ -1,4 +1,4 @@
-from django.http import Http404
+from rest_framework import status
 from rest_framework.generics import (ListCreateAPIView, RetrieveUpdateDestroyAPIView,
                                      RetrieveAPIView)
 from rest_framework.views import APIView
@@ -12,6 +12,8 @@ from school.serializers import (AdminLoginSerializer, AdminSerializer,
                              LecturerLoginSerializer, LecturerSerializer,
                              StudentLoginSerializer, StudentSerializer, SubjectSerializer)
 
+wrong_credentials_response = Response({'message': 'Wrong email and password combination'}, 
+                                      status=status.HTTP_404_NOT_FOUND)
 # Create your views here.
 class StudentLogin(APIView):
     allowed_methods = ['POST']
@@ -25,10 +27,9 @@ class StudentLogin(APIView):
             if check_password(password, student.password):
                 serializer = StudentLoginSerializer(student)
                 return Response(serializer.data)
-            return Response('Wrong email and password combination')
+            return wrong_credentials_response
         except Student.DoesNotExist:
-            raise Http404
-
+            return wrong_credentials_response
 
 class StudentList(ListCreateAPIView):
     queryset = Student.objects.all()
@@ -52,9 +53,9 @@ class LecturerLogin(APIView):
             if check_password(password, lecturer.password):
                 serializer = LecturerLoginSerializer(lecturer)
                 return Response(serializer.data)
-            return Response('Wrong email and password combination')
+            return wrong_credentials_response
         except Lecturer.DoesNotExist:
-            raise Http404
+            return wrong_credentials_response
 
 
 class LecturerList(ListCreateAPIView):
@@ -79,9 +80,9 @@ class AdminLogin(APIView):
             if check_password(password, admin.password):
                 serializer = AdminLoginSerializer(admin)
                 return Response(serializer.data)
-            return Response('Wrong email and password combination')
+            return wrong_credentials_response
         except Admin.DoesNotExist:
-            raise Http404
+            return wrong_credentials_response
 
 
 class AdminList(ListCreateAPIView):
