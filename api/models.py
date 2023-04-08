@@ -10,14 +10,7 @@ class Location(models.Model):
     
     def __str__(self):
         return self.name
-    
-class Issue(models.Model):
-    student = models.ForeignKey(Student, on_delete=models.CASCADE)
-    message = models.CharField(max_length=255)
-    date_created = models.DateTimeField(auto_now_add=True)
-    
-    def __str__(self):
-        return f'{self.student}: {self.message}'
+
     
 class Schedule(models.Model):
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
@@ -29,6 +22,15 @@ class Schedule(models.Model):
     
     def __str__(self):
         return f'{self.subject} in {self.location}'
+    
+class Issue(models.Model):
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    schedule = models.ForeignKey(Schedule, on_delete=models.CASCADE)
+    message = models.CharField(max_length=255)
+    date_created = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return f'{self.student}: {self.message}'
     
 class Attendance(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
