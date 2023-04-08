@@ -1,7 +1,7 @@
 
 from django.urls import path
 
-from school.views import AdminDetail, AdminList, AdminLogin, CourseDetail, CourseList, EnrollmentDetail, EnrollmentList, LecturerDetail, LecturerList, LecturerLogin, StudentDetail, StudentList, StudentLogin, SubjectDetail, SubjectList
+from school.views import AdminDetail, AdminList, AdminLogin, CourseDetail, CourseList, EnrollmentDetail, EnrollmentList, LecturerDetail, LecturerList, LecturerLogin, StudentDetail, StudentList, StudentLogin, SubjectDetail, SubjectList, SubjectListByLecturer
 
 
 urlpatterns = [
@@ -17,6 +17,7 @@ urlpatterns = [
     path('courses', CourseList.as_view(), name='course-list'),
     path('course/<str:pk>', CourseDetail.as_view(), name='course-detail'),
     path('subjects', SubjectList.as_view(), name='subject-list'),
+    path('subjects-by-lec/<int:lecturer_id>', SubjectListByLecturer.as_view(), name='subject-list-by-lec'),
     path('subject/<str:pk>', SubjectDetail.as_view(), name='subject-detail'),
     path('enrollments', EnrollmentList.as_view(), name='enrollment-list'),
     path('enrollment/<str:pk>', EnrollmentDetail.as_view(), name='enrollment-detail'),

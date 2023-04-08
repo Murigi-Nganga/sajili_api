@@ -1,20 +1,22 @@
 from rest_framework import status
 from rest_framework.generics import (ListCreateAPIView, RetrieveUpdateDestroyAPIView,
-                                     RetrieveAPIView)
+                                     ListAPIView)
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from api.mixins import PartialUpdateMixin
 from school.models import (Admin, Course, Enrollment, Lecturer, Student,
-                        Subject)
+                           Subject)
 from django.contrib.auth.hashers import check_password
 from school.serializers import (AdminLoginSerializer, AdminSerializer,
-                             CourseSerializer, EnrollmentSerializer,
-                             LecturerLoginSerializer, LecturerSerializer,
-                             StudentLoginSerializer, StudentSerializer, SubjectSerializer)
+                                CourseSerializer, EnrollmentSerializer,
+                                LecturerLoginSerializer, LecturerSerializer,
+                                StudentLoginSerializer, StudentSerializer, SubjectSerializer)
 
-wrong_credentials_response = Response({'message': 'Wrong email and password combination'}, 
+wrong_credentials_response = Response({'message': 'Wrong email and password combination'},
                                       status=status.HTTP_404_NOT_FOUND)
 # Create your views here.
+
+
 class StudentLogin(APIView):
     allowed_methods = ['POST']
 
@@ -30,6 +32,7 @@ class StudentLogin(APIView):
             return wrong_credentials_response
         except Student.DoesNotExist:
             return wrong_credentials_response
+
 
 class StudentList(ListCreateAPIView):
     queryset = Student.objects.all()
@@ -109,11 +112,20 @@ class SubjectList(ListCreateAPIView):
     queryset = Subject.objects.all()
     serializer_class = SubjectSerializer
 
+# Get subjects taught by a lecturer
+class SubjectListByLecturer(ListAPIView):
+    serializer_class = SubjectSerializer
+
+    def get_queryset(self):
+        lecturer_id = self.kwargs['lecturer_id']
+        return Subject.objects.filter(lecturer=lecturer_id)
+
 
 class SubjectDetail(PartialUpdateMixin, RetrieveUpdateDestroyAPIView):
     queryset = Subject.objects.all()
     serializer_class = SubjectSerializer
-    
+
+
 class EnrollmentList(ListCreateAPIView):
     queryset = Enrollment.objects.all()
     serializer_class = EnrollmentSerializer
