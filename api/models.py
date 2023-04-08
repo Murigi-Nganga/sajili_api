@@ -1,6 +1,6 @@
 from django.db import models
 
-from school.models import Student, Subject
+from school.models import Lecturer, Student, Subject
 
 class Location(models.Model):
     name = models.CharField(max_length=255)
@@ -15,7 +15,7 @@ class Location(models.Model):
 class Schedule(models.Model):
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
     location = models.ForeignKey(Location, on_delete=models.CASCADE)
-    # lecturer = models.ForeignKey(Lecturer, on_delete=models.CASCADE)
+    lecturer = models.ForeignKey(Lecturer, on_delete=models.CASCADE)
     start_time = models.TimeField()
     end_time = models.TimeField()
     is_online = models.BooleanField()
