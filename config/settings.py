@@ -68,7 +68,7 @@ MIDDLEWARE = [
 
 CROSS_ORIGIN_ALLOW_ALL = True
 
-CORS_ALLOWED_ORIGINS = ['http://localhost:3000']
+# CORS_ALLOWED_ORIGINS = ["http//:localhost:3000"]
 
 ROOT_URLCONF = 'config.urls'
 
@@ -101,15 +101,14 @@ WSGI_APPLICATION = 'config.wsgi.application'
 #     }
 # }
 
-#TODO: Migrate sensitive details to .env
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'sajili',
+        'NAME': 'sajili_h0jm',
         'USER': os.getenv('USER'),
         'PASSWORD': os.getenv('PASSWORD'),
-        'HOST': '127.0.0.1',
+        'HOST': os.getenv('HOST'),
         'PORT': '5432',
     }
 }

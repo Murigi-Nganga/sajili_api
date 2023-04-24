@@ -1,8 +1,9 @@
-from rest_framework.generics import (ListCreateAPIView, RetrieveUpdateDestroyAPIView)
+from rest_framework.generics import (ListAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView)
 from api.mixins import PartialUpdateMixin
 from api.models import (Attendance, Issue, Location, Schedule)
 from api.serializers import (AttendanceSerializer, IssueSerializer,
                              LocationSerializer, ScheduleSerializer,)
+from school.models import Subject
 
 
 class AttendanceList(ListCreateAPIView):
@@ -28,6 +29,24 @@ class LocationDetail(PartialUpdateMixin, RetrieveUpdateDestroyAPIView):
 class ScheduleList(ListCreateAPIView):
     queryset = Schedule.objects.all()
     serializer_class = ScheduleSerializer
+    
+# Get subjects taught by a lecturer
+class ScheduleListByLecturer(ListAPIView):
+    serializer_class = ScheduleSerializer
+
+    def get_queryset(self):
+        lecturer_id = self.kwargs['lecturer_id']
+        return Schedule.objects.filter(lecturer=lecturer_id)
+    
+class ScheduleListByStudent(ListAPIView):
+    serializer_class = ScheduleSerializer
+
+    def get_queryset(self):
+        year_of_study = self.kwargs['year_of_study']
+        print(year_of_study)
+        subjects = Subject.objects.filter(year_studied=year_of_study) 
+        print(subjects)
+        return Schedule.objects.filter(subject__in=subjects)
 
 
 class ScheduleDetail(PartialUpdateMixin, RetrieveUpdateDestroyAPIView):

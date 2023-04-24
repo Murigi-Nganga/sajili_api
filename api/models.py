@@ -11,14 +11,14 @@ class Location(models.Model):
     def __str__(self):
         return self.name
 
-    
 class Schedule(models.Model):
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
     location = models.ForeignKey(Location, on_delete=models.CASCADE)
-    lecturer = models.ForeignKey(Lecturer, on_delete=models.CASCADE)
+    lecturer = models.ForeignKey(Lecturer, on_delete=models.CASCADE) 
+    day_of_week = models.CharField(max_length=255)
     start_time = models.TimeField()
     end_time = models.TimeField()
-    is_online = models.BooleanField()
+    is_online = models.BooleanField(default=False)
     
     def __str__(self):
         return f'{self.subject} in {self.location}'
