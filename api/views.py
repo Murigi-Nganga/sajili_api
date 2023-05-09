@@ -30,7 +30,7 @@ class ScheduleList(ListCreateAPIView):
     queryset = Schedule.objects.all()
     serializer_class = ScheduleSerializer
     
-# Get subjects taught by a lecturer
+# Get subject schedules for a lecturer
 class ScheduleListByLecturer(ListAPIView):
     serializer_class = ScheduleSerializer
 
@@ -38,7 +38,8 @@ class ScheduleListByLecturer(ListAPIView):
         lecturer_id = self.kwargs['lecturer_id']
         return Schedule.objects.filter(lecturer=lecturer_id)
     
-class ScheduleListByStudent(ListAPIView):
+# Get schedules by the year of study
+class ScheduleListByYear(ListAPIView):
     serializer_class = ScheduleSerializer
 
     def get_queryset(self):
