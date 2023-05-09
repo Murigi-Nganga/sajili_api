@@ -43,9 +43,7 @@ class ScheduleListByStudent(ListAPIView):
 
     def get_queryset(self):
         year_of_study = self.kwargs['year_of_study']
-        print(year_of_study)
         subjects = Subject.objects.filter(year_studied=year_of_study) 
-        print(subjects)
         return Schedule.objects.filter(subject__in=subjects)
 
 
