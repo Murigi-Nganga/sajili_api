@@ -35,6 +35,7 @@ class Issue(models.Model):
 class Attendance(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
     schedule = models.ForeignKey(Schedule, on_delete=models.CASCADE)
+    method_used = models.CharField(max_length=255)
     
     def __str__(self):
         return f'{self.student}: {self.schedule}'
