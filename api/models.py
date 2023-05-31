@@ -5,7 +5,7 @@ from school.models import Lecturer, Student, Subject
 class Location(models.Model):
     name = models.CharField(max_length=255)
     
-    #* storing polygon points as a string - which is a list of lists
+    #* storing polygon points as a string - which contains a list of lists
     polygon_points = models.CharField(max_length=1000, null=True)
     
     def __str__(self):
@@ -33,9 +33,18 @@ class Issue(models.Model):
         return f'{self.student}: {self.message}'
     
 class Attendance(models.Model):
+    
+    AUTH_METHOD_CHOICES = (
+        ("local_auth", "local_auth"),
+        ("face_recognition_service", "face_recognition_service"),
+        ("other", "other"),
+    )
+    
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
     schedule = models.ForeignKey(Schedule, on_delete=models.CASCADE)
-    method_used = models.CharField(max_length=255)
+    is_partial = models.BooleanField(default=False)
+    auth_method = models.CharField(max_length=30, choices=AUTH_METHOD_CHOICES, default='other')
+    time_signed_in = models.DateTimeField()
     
     def __str__(self):
         return f'{self.student}: {self.schedule}'

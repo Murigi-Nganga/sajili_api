@@ -1,13 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth.hashers import make_password
 from api.models import (Attendance, Issue, Location, Schedule)
-from school.serializers import LecturerSerializer
-
-        
-class AttendanceSerializer(serializers.ModelSerializer):
-    class Meta:
-        fields = '__all__'
-        model = Attendance
+from school.serializers import LecturerSerializer, StudentSerializer
         
 class IssueSerializer(serializers.ModelSerializer):
     class Meta:
@@ -26,4 +20,20 @@ class ScheduleSerializer(serializers.ModelSerializer):
         model = Schedule
         depth = 1
         
+class CUDAttendanceSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        fields = '__all__'
+        model = Attendance
+        
+class RetrieveAttendancesSerializer(serializers.ModelSerializer):
+    schedule = ScheduleSerializer()
+    student = StudentSerializer()
+    
+    class Meta:
+        fields = '__all__'
+        model = Attendance
+        depth = 2
+        
+    
         

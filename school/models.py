@@ -8,7 +8,9 @@ class Student(models.Model):
     phone_number = models.CharField(max_length=20, unique=True)
     email = models.EmailField(max_length=255, unique=True)
     year_of_study = models.IntegerField(validators=[MinValueValidator(1)])
-    image_path = models.URLField(max_length=255, unique=True, null=True)
+    
+    #TODO: Check length that will be used to store encodings as a String
+    face_image_encodings = models.CharField(max_length=3000, null=True)
     password = models.CharField(max_length=255)
     
     def __str__(self):
@@ -53,6 +55,9 @@ class Subject(models.Model):
 class Enrollment(models.Model):
     student = models.OneToOneField(Student, on_delete=models.CASCADE)
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    
+    class Meta:
+        unique_together = ('student', 'course')
     
     def __str__(self):
         return f'{self.student} enrolled in {self.course}'
