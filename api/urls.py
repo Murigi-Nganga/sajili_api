@@ -1,12 +1,10 @@
 from django.urls import path, re_path
 
-from api.views import (AttendanceDetail, AttendanceList, CreateAttendance, IssueDetail, IssueList, 
+from api.views import (AttendanceDetail, AttendanceList, CreateAttendance,
                        LocationDetail, LocationList, ScheduleDetail, ScheduleList, 
                        ScheduleListByLecturer, ScheduleListByYear)
 
 urlpatterns = [
-    path('issues', IssueList.as_view(), name='issue-list'),
-    path('issue/<str:pk>', IssueDetail.as_view(), name='issue-detail'),
     path('schedules', ScheduleList.as_view(), name='schedule-list'),
     path('schedules-by-lec/<int:lecturer_id>', ScheduleListByLecturer.as_view(), name='schedule-list-by-lec'),
     path('schedules-by-year/<int:year_of_study>', ScheduleListByYear.as_view(), name='schedule-list-by-year'),

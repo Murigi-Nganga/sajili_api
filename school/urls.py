@@ -1,13 +1,14 @@
 
 from django.urls import path
 
-from school.views import AdminDetail, AdminList, AdminLogin, CourseDetail, CourseList, EnrollmentDetail, EnrollmentList, LecturerDetail, LecturerList, LecturerLogin, StudentDetail, StudentList, StudentLogin, SubjectDetail, SubjectList, SubjectListByLecturer
+from school.views import AdminDetail, AdminList, AdminLogin, CourseDetail, CourseList, EnrollmentDetail, EnrollmentList, LecturerDetail, LecturerList, LecturerLogin, StudentDetail, StudentList, StudentLogin, StudentUpdateWithPhoto, SubjectDetail, SubjectList, SubjectListByLecturer
 
 
 urlpatterns = [
     path('students', StudentList.as_view(), name='student-list'),
     path('student/login', StudentLogin.as_view(), name='student-login'),
     path('student/<str:pk>', StudentDetail.as_view(), name='student-detail'),
+    path('student/submit-photo', StudentUpdateWithPhoto.as_view(), name='student-upload-photo'),
     path('lecturers', LecturerList.as_view(), name='lecturer-list'),
     path('lecturer/login', LecturerLogin.as_view(), name='lecturer-login'),
     path('lecturer/<str:pk>', LecturerDetail.as_view(), name='lecturer-detail'),

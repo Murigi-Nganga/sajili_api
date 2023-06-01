@@ -8,8 +8,6 @@ class Student(models.Model):
     phone_number = models.CharField(max_length=20, unique=True)
     email = models.EmailField(max_length=255, unique=True)
     year_of_study = models.IntegerField(validators=[MinValueValidator(1)])
-    
-    #TODO: Check length that will be used to store encodings as a String
     face_image_encodings = models.CharField(max_length=3000, null=True)
     password = models.CharField(max_length=255)
     

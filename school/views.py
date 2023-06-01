@@ -11,11 +11,10 @@ from school.serializers import (AdminLoginSerializer, AdminSerializer,
                                 CourseSerializer, EnrollmentSerializer,
                                 LecturerLoginSerializer, LecturerSerializer,
                                 StudentLoginSerializer, StudentSerializer, SubjectSerializer)
+from school.utils import get_facial_encodings
 
 wrong_credentials_response = Response({'message': 'Wrong email and password combination'},
                                       status=status.HTTP_404_NOT_FOUND)
-# Create your views here.
-
 
 class StudentLogin(APIView):
     allowed_methods = ['POST']
@@ -42,6 +41,25 @@ class StudentList(ListCreateAPIView):
 class StudentDetail(PartialUpdateMixin, RetrieveUpdateDestroyAPIView):
     queryset = Student.objects.all()
     serializer_class = StudentSerializer
+    
+class StudentUpdateWithPhoto(APIView):
+    allowed_methods = ['POST']
+    
+    def post(self, request):
+        reg_no = request.data.get('reg_no')
+
+        try:
+            student = Student.objects.get(pk=reg_no)
+        except Student.DoesNotExist:
+            return Response({'error': 'Student not found'}, status=404)
+
+        image = request.FILES.get('student_image')
+
+        face_encodings = get_facial_encodings(image)
+        student.face_encodings = face_encodings
+        student.save()
+        
+        return Response({'message': 'Image processed successfully'}, status=200)
 
 
 class LecturerLogin(APIView):

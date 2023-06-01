@@ -1,12 +1,6 @@
 from rest_framework import serializers
-from django.contrib.auth.hashers import make_password
-from api.models import (Attendance, Issue, Location, Schedule)
+from api.models import (Attendance, Location, Schedule)
 from school.serializers import LecturerSerializer, StudentSerializer
-        
-class IssueSerializer(serializers.ModelSerializer):
-    class Meta:
-        fields = '__all__'
-        model = Issue
         
 class LocationSerializer(serializers.ModelSerializer):
     class Meta:
