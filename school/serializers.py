@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth.hashers import make_password
-from school.models import (Admin, Course, Enrollment, 
-                        Lecturer, Student, Subject)
+from school.models import (Admin, Course, Enrollment,
+                           Lecturer, Student, Subject)
 from school.utils import generate_access_token
 
 
@@ -20,7 +20,6 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class StudentSerializer(UserSerializer):
-
     class Meta:
         fields = '__all__'
         model = Student
@@ -28,9 +27,9 @@ class StudentSerializer(UserSerializer):
 
     def create(self, validated_data):
         request_data = self.context.get('request').data
-        
+
         if not request_data.get('course'):
-           raise serializers.ValidationError({"course": ["This field required."]}) 
+            raise serializers.ValidationError({"course": ["This field required."]})
 
         student = super().create(validated_data)
         course = Course.objects.get(name=request_data.get('course'))
@@ -72,18 +71,20 @@ class AdminLoginSerializer(UserLoginSerializer):
         model = Admin
         extra_kwargs = {'password': {'write_only': True}}
 
+
 class CourseSerializer(serializers.ModelSerializer):
     class Meta:
         fields = '__all__'
         model = Course
-        
+
+
 class SubjectSerializer(serializers.ModelSerializer):
     class Meta:
         fields = '__all__'
         model = Subject
-        
+
+
 class EnrollmentSerializer(serializers.ModelSerializer):
     class Meta:
         fields = '__all__'
         model = Enrollment
-        

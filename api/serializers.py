@@ -8,7 +8,6 @@ class LocationSerializer(serializers.ModelSerializer):
         model = Location
         
 class ScheduleSerializer(serializers.ModelSerializer):
-    lecturer = LecturerSerializer()
     class Meta:
         fields = '__all__'
         model = Schedule

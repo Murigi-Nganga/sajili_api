@@ -16,10 +16,11 @@ from school.utils import get_facial_encodings
 wrong_credentials_response = Response({'message': 'Wrong email and password combination'},
                                       status=status.HTTP_404_NOT_FOUND)
 
+
 class StudentLogin(APIView):
     allowed_methods = ['POST']
 
-    def post(self, request, *args, **kwargs):
+    def post(request, *args, **kwargs):
         email = request.data.get('email')
         password = request.data.get('password')
 
@@ -41,11 +42,12 @@ class StudentList(ListCreateAPIView):
 class StudentDetail(PartialUpdateMixin, RetrieveUpdateDestroyAPIView):
     queryset = Student.objects.all()
     serializer_class = StudentSerializer
-    
+
+
 class StudentUpdateWithPhoto(APIView):
     allowed_methods = ['POST']
-    
-    def post(self, request):
+
+    def post(self, request, *args, **kwargs):
         reg_no = request.data.get('reg_no')
 
         try:
@@ -58,7 +60,7 @@ class StudentUpdateWithPhoto(APIView):
         face_encodings = get_facial_encodings(image)
         student.face_encodings = face_encodings
         student.save()
-        
+
         return Response({'message': 'Image processed successfully'}, status=200)
 
 
@@ -91,7 +93,7 @@ class LecturerDetail(PartialUpdateMixin, RetrieveUpdateDestroyAPIView):
 
 class AdminLogin(APIView):
     allowed_methods = ['POST']
-
+    
     def post(self, request, *args, **kwargs):
         email = request.data.get('email')
         password = request.data.get('password')
@@ -129,6 +131,7 @@ class CourseDetail(PartialUpdateMixin, RetrieveUpdateDestroyAPIView):
 class SubjectList(ListCreateAPIView):
     queryset = Subject.objects.all()
     serializer_class = SubjectSerializer
+
 
 # Get subjects taught by a lecturer
 class SubjectListByLecturer(ListAPIView):
